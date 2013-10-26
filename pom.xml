@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.exacode.vaadin</groupId>
-	<artifactId>spring-vaadin</artifactId>
+	<artifactId>spring-vaadin-example</artifactId>
 	<packaging>war</packaging>
 	<name>spring-vaadin</name>
 	<version>1.0-SNAPSHOT</version>
-	
+	 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
