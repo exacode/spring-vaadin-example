@@ -9,7 +9,6 @@ import javax.servlet.ServletRegistration;
 
 import net.exacode.vaadin.config.ApplicationConfiguration;
 import net.exacode.vaadin.config.ApplicationProfiles;
-import net.exacode.vaadin.integration.SpringVaadinServlet;
 import net.exacode.vaadin.ui.HelloWorldUi;
 
 import org.slf4j.Logger;
@@ -19,8 +18,10 @@ import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextCleanupListener;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
+import com.vaadin.server.VaadinServlet;
 
 public class ApplicationInitializer implements WebApplicationInitializer {
 
@@ -66,13 +67,15 @@ public class ApplicationInitializer implements WebApplicationInitializer {
 			logger.info("Application started in production profile");
 		}
 
-		SpringVaadinServlet vaadinServlet = new SpringVaadinServlet();
+		VaadinServlet vaadinServlet = new VaadinServlet();
 		ServletRegistration.Dynamic vaadinServletRegistration = servletContext
 				.addServlet("vaadinServlet", vaadinServlet);
 		vaadinServletRegistration.setInitParameter("ui",
 				HelloWorldUi.class.getName());
 		vaadinServletRegistration.setInitParameter("productionMode",
 				Boolean.toString(productionProfile));
+		vaadinServletRegistration.setInitParameter("UIProvider",
+				SpringUIProvider.class.getName());
 		vaadinServletRegistration.setLoadOnStartup(1);
 		vaadinServletRegistration.addMapping("/*");
 
@@ -83,6 +86,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
 			AnnotationConfigWebApplicationContext rootContext) {
 		servletContext.addListener(new ContextLoaderListener(rootContext));
 		servletContext.addListener(new ContextCleanupListener());
+		servletContext.addListener(new RequestContextListener());
 	}
 
 }
